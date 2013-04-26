@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ super }} - Add a toilet{% endblock %}
+{% block content %}
+<form action="{{ url_for('toilet.add') }}" method="post">
+    {{ toilet_form.csrf_token }}
+    {{ toilet_form.errors }}
+    {{ toilet_form.title.label }}
+    {{ toilet_form.title }}
+    {{ toilet_form.title.errors }}
+    {{ toilet_form.latitude.label }}
+    {{ toilet_form.latitude }}
+    {{ toilet_form.latitude.errors }}
+    {{ toilet_form.longitude.label }}
+    {{ toilet_form.longitude }}
+    {{ toilet_form.longitude.errors }}
+    <input type="submit">
+</form>
+{% endblock %}
