@@ -20,15 +20,23 @@ def install():
     db.create_all()
 
     # Sample data
-    from toilet.models import Category, Toilet
+    from toilet.models import Category, Tag, Toilet
 
-    c1 = Category('public')
-    c2 = Category('paid')
-    db.session.add(c1)
-    db.session.add(c2)
-    t1 = Toilet('test', 47.375312, 8.532493)
-    t1.category = c1
-    db.session.add(t1)
+    cat_public = Category('public')
+    db.session.add(cat_public)
+    cat_commercial = Category('commercial')
+    db.session.add(cat_commercial)
+    cat_paid = Category('paid')
+    db.session.add(cat_paid)
+    cat_code = Category('code')
+    db.session.add(cat_code)
+
+    tag_disabled = Tag('disabled')
+    db.session.add(tag_disabled)
+
+    t_sihlpost = Toilet('Sihlpost', 47.375312, 8.532493)
+    t_sihlpost.category = cat_commercial
+    db.session.add(t_sihlpost)
     db.session.commit()
 
     return 'Installed'
