@@ -16,7 +16,7 @@ class Toilet(db.Model):
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     category = db.relationship('Category', backref=db.backref('toilets', lazy='dynamic'))
-    features = db.relationship('Feature', secondary=tags, backref=db.backref('toilets', lazy='dynamic'))
+    tags = db.relationship('Tag', secondary=tags, backref=db.backref('toilets', lazy='dynamic'))
 
     def __init__(self, title, latitude, longitude):
         self.title = title
@@ -31,7 +31,7 @@ class Toilet(db.Model):
             'address': self.address,
             'description': self.description,
             'category': self.category.title,
-            'features': [f.title for f in self.features]
+            'tags': [f.title for f in self.tags]
         }
 
     def __repr__(self):
