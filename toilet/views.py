@@ -9,7 +9,7 @@ toilet = Blueprint('toilet', __name__)
 
 @toilet.route('/')
 def index():
-    return 'Hello world'
+    return render_template('index.html')
 
 
 @toilet.route('/<int:toilet_id>')
