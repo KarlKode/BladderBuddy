@@ -37,17 +37,26 @@ def toilet():
             if not title:
                 raise ValueError('Invalid title')
             description = request.form.get('description')
-            time_open = request.form.get('addTimeOpen')
-            time_close = request.form.get('addTimeClose')
+            address = request.form.get('address')
+            category_id = int(request.form.get('category'))
             lat = float(request.form.get('lat'))
             lng = float(request.form.get('lng'))
+            price = int(request.form.get('price'))
+            code = request.form.get('code')
+            time_open = request.form.get('time_open')
+            time_close = request.form.get('time_close')
             t = Toilet(title, lat, lng)
             t.description = description
+            t.address = address
+            t.category_id = category_id
+            t.price = price
+            t.code = code
+            print request.form
+            print time_open
             #t.time_open = time_open
             #t.time_close = time_close
             db.session.add(t)
             db.session.commit()
-            print Toilet.query.all()
             return jsonify(success='success')
         except:
-            return jsonify(success='error')
+            raise abort(500)

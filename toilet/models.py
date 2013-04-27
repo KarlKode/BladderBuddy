@@ -13,6 +13,8 @@ class Toilet(db.Model):
     lng = db.Column(db.Float(precision=64))
     address = db.Column(db.Text)
     description = db.Column(db.Text)
+    price = db.Column(db.Integer)
+    code = db.Column(db.String(10))
     time_open = db.Column(db.Time)
     time_close = db.Column(db.Time)
 
@@ -62,6 +64,8 @@ class Toilet(db.Model):
             'lng': self.lng,
             'address': self.address,
             'description': self.description,
+            'price': self.price,
+            'code': self.code,
             'category': category,
             'tags': [tag.__json__() for tag in self.tags]
         }
