@@ -1,2 +1,3 @@
 SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/test.db'
 SECRET_KEY = 'abcdefg'
+SEND_FILE_MAX_AGE_DEFAULT = 1

@@ -1,18 +1,12 @@
 {% extends "base.html" %}
 {% block title %}{{ super }} - Add a toilet{% endblock %}
 {% block content %}
+{% from "_formhelpers.html" import render_field %}
 <form action="{{ url_for('toilet.add') }}" method="post">
+    {{ render_field(toilet_form.title) }}<br>
+    {{ render_field(toilet_form.latitude) }}<br>
+    {{ render_field(toilet_form.longitude) }}<br>
     {{ toilet_form.csrf_token }}
-    {{ toilet_form.errors }}
-    {{ toilet_form.title.label }}
-    {{ toilet_form.title }}
-    {{ toilet_form.title.errors }}
-    {{ toilet_form.latitude.label }}
-    {{ toilet_form.latitude }}
-    {{ toilet_form.latitude.errors }}
-    {{ toilet_form.longitude.label }}
-    {{ toilet_form.longitude }}
-    {{ toilet_form.longitude.errors }}
     <input type="submit">
 </form>
 {% endblock %}

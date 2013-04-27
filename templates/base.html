@@ -2,8 +2,78 @@
 <html>
 <head>
     <title>{% block title %}BladderPal{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="static/css/bootstrap-responsive.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="static/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap-Timepicker
+    http://jdewit.github.io/bootstrap-timepicker/ -->
+    <link type="text/css" href="static/css/bootstrap-timepicker.min.css" />
+    <script type="text/javascript" src="static/js/bootstrap-timepicker.min.js"></script>
+
+    <!-- Google Maps -->
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDGhGnaADl1sLWyjd6it63CywyboidDkag&sensor=true">
+    </script>
+
+    <!-- BladderPal -->
+    <script type="text/javascript">
+        var apiURLAdd = "{{ url_for('api.toilet') }}";
+        var apiURLInfo = "{{ url_for('api.toilet') }}";
+        var apiURLList = "{{ url_for('api.toilets') }}";
+    </script>
+    <link href="static/css/bladderpal.css" rel="stylesheet" media="screen">
+    <script src="static/js/bladderpal.js"></script>
 </head>
 <body>
+
+    <div class="container fill">
+        <div class="navbar navbar-fixed-top navbar-inverse">
+            <div class="navbar-inner">
+                <a class="brand" href="#">BladderPal</a>
+                <ul class="nav">
+                    <li><a id="addButton" href="#">Add</a> </li>
+                </ul>
+            </div>
+        </div>
 {% block content %}{% endblock %}
+    </div>
+
+    <div id="addInfoWindow" class="hide">
+        <label for="addAddressLookup">Address lookup</label>
+        <input type="text" id="addAddressLookup">
+        <button id="addAddressLookupButton">Lookup</button><br>
+        <button id="addToiletButton">Add facility</button>
+    </div>
+
+    <div id="addModal" class="modal hide fade">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Add a toilet</h3>
+        </div>
+        <div class="modal-body">
+            <form id="addForm" action="{{ url_for('toilet.add') }}" method="post">
+                <div class="input-append bootstrap-timepicker">
+                    <label for="addTitle">Title</label><input id="addTitle" type="text" name="title">
+                    <label for="addDescription">Description</label><textarea id="addDescription" name="description"></textarea>
+                    <label for="addTimeOpen">Opens at</label><input id="addTimeOpen" type="text" class="input-small">
+                    <span class="add-on">
+                        <i class="icon-time"></i>
+                    </span>
+                    <label for="addTimeClose">Closes at</label><input id="addTimeClose" type="text" class="input-small">
+                    <span class="add-on">
+                        <i class="icon-time"></i>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+            <a id="addSubmit" href="#" class="btn btn-primary">Add</a>
+        </div>
+    </div>
 </body>
 </html>

@@ -17,6 +17,7 @@ app.register_blueprint(toilet)
 # Debug
 @app.route('/install')
 def install():
+    db.drop_all()
     db.create_all()
 
     # Sample data
@@ -36,10 +37,11 @@ def install():
 
     t_sihlpost = Toilet('Sihlpost', 47.375312, 8.532493)
     t_sihlpost.category = cat_commercial
+    t_sihlpost.tags.append(tag_disabled)
     db.session.add(t_sihlpost)
     db.session.commit()
 
     return 'Installed'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)

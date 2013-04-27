@@ -1,7 +1,12 @@
-from flask.ext.wtf import Form, TextField, DecimalField
+from flask.ext.wtf import Form, TextField, FloatField, HiddenInput, TextAreaField
 
 
-class ToiletForm(Form):
+class ToiletAddForm(Form):
     title = TextField('title')
-    latitude = DecimalField('latitude')
-    longitude = DecimalField('longitude')
+    latitude = FloatField('latitude')
+    longitude = FloatField('longitude')
+
+
+class ToiletSearchForm(Form):
+    latitude = FloatField('latitude')
+    longitude = FloatField('longitude')

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %} - Search{% endblock %}
+
+{% block content %}
+    <div>
+    {% from "_formhelpers.html" import render_field %}
+    <form action="{{ url_for('toilet.search') }}" method="post">
+        {{ render_field(search_form.latitude) }}<br>
+        {{ render_field(search_form.longitude) }}
+        {{ search_form.csrf_token }}
+        <input type="submit">
+    </form>
+    </div>
+    <div>
+    {% for toilet in toilets %}
+        {{ toilet.title }}
+    {% endfor %}
+    </div>
+{% endblock %}

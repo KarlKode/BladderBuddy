@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>BladderPal</h1>
+    <script>
+    var categories = {{ categories_json|safe }};
+    var tags = {{ tags_json|safe }};
+    </script>
+    <div id="map-canvas"/>
 {% endblock %}

@@ -9,29 +9,61 @@ tags = db.Table('tags',
 class Toilet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
-    latitude = db.Column(db.Float(precision=64))
-    longitude = db.Column(db.Float(precision=64))
+    lat = db.Column(db.Float(precision=64))
+    lng = db.Column(db.Float(precision=64))
     address = db.Column(db.Text)
     description = db.Column(db.Text)
+    time_open = db.Column(db.Time)
+    time_close = db.Column(db.Time)
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
     category = db.relationship('Category', backref=db.backref('toilets', lazy='dynamic'))
     tags = db.relationship('Tag', secondary=tags, backref=db.backref('toilets', lazy='dynamic'))
 
-    def __init__(self, title, latitude, longitude):
+    @staticmethod
+    def search(latitude, longitude):
+        query = Toilet.query
+        latitude_min = latitude - 0.25
+        latitude_max = latitude + 0.25
+        if latitude_min < -90:
+            latitude_min += 180
+            query = query.filter(db.or_(Toilet.lat >= latitude_min, Toilet.lat <= latitude_max))
+        elif latitude_max > 90:
+            latitude_max -= 180
+            query = query.filter(db.or_(Toilet.lat >= latitude_min, Toilet.lat <= latitude_max))
+        else:
+            query = query.filter(Toilet.lat >= latitude_min, Toilet.lat <= latitude_max)
+        longitude_min = longitude - 0.5
+        longitude_max = longitude + 0.5
+        if longitude_min < -180:
+            longitude_min += 360
+            query = query.filter(db.or_(Toilet.lng >= longitude_min, Toilet.lng <= longitude_max))
+        elif longitude_max > 180:
+            longitude_max -= 360
+            query = query.filter(db.or_(Toilet.lng >= longitude_min, Toilet.lng <= longitude_max))
+        else:
+            query = query.filter(Toilet.lng >= longitude_min, Toilet.lng <= longitude_max)
+        return query
+
+    def __init__(self, title, lat, lng):
         self.title = title
-        self.latitude = latitude
-        self.longitude = longitude
+        self.lat = lat
+        self.lng = lng
 
     def __json__(self):
+        category = 'Unknown'
+        if self.category:
+            category = self.category.__json__()
+        tags = []
         return {
+            'id': self.id,
             'title': self.title,
-            'latitude': self.latitude,
-            'longitude': self.longitude,
+            'lat': self.lat,
+            'lng': self.lng,
             'address': self.address,
             'description': self.description,
-            'category': self.category.title,
-            'tags': [f.title for f in self.tags]
+            'category': category,
+            'tags': [tag.__json__() for tag in self.tags]
         }
 
     def __repr__(self):
@@ -49,6 +81,10 @@ class Category(db.Model):
         return '<Category %r>' % self.title
 
 
+    def __json__(self):
+        return {'id': self.id, 'title': self.title}
+
+
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50))
@@ -58,3 +94,7 @@ class Tag(db.Model):
 
     def __repr__(self):
         return '<Tag %r>' % self.title
+
+
+    def __json__(self):
+        return {'id': self.id, 'title': self.title}
